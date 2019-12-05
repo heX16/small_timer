@@ -5,7 +5,7 @@ Each timer instance takes 2 or 4 bytes. Not uses hardware timer and not uses int
 # This file in other language
 0) [Русская документация](README_RUS.md).
 
-## Example:
+# Example:
 ````
 csTimer myTimer;
 
@@ -22,7 +22,7 @@ void loop() {
 
 ````
 
-## Example 2 - with default time:
+Example 2 - with default time:
 ````
 csTimerDef<1000> myTimer;
 
@@ -39,7 +39,7 @@ void loop() {
 
 ````
 
-## Description
+# Description
 
 The timer can be in two states - started or stopped.
 The timer at creation to be with the state is stopped.
@@ -56,8 +56,13 @@ If you use this timers try not to use the "delay" function.
 You cannot call the "** run **" twice in the same _instance_ timer in one scan - the second call will not work.
 You must not "hide" the "**run**" function call in the condition (see in examples).
 
+To achieve high accuracy, you must call the "**run**" method
+for all timers as often as possible (1000 times per second is recomended minimum).
+If your "loop" procedure does not contain slow and blocking functions,
+then you don’t need to specifically worry about this -
+the "loop" procedure is called quite often and quickly.
 
-## Documentation
+# Documentation
 
 Timer classes:
 
@@ -81,11 +86,14 @@ Functions in classes (for all classes):
 
 **run** - Main function. Must be called in every cycle. If the timer has worked, then True is returned once.
 
-### Extended functions
+## Extended timers set and info
 
-**getFlag** - Read user flag bit. If there is no flag support then False is always returned.
-Some timer classes may contain a custom flag that the user use at his discretion.
+Additional 10 classes of timers with different accuracy and a minimum size of 1 byte.
 
-**setFlag** - Write to user flag bit.
+Attention: only for professionals! Additional testing required.
 
+[Extended timers set list](extended_info.md)
 
+# More examples
+
+[Examples of how to write code correctly](extended_info.md#Examples)
