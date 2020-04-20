@@ -9,7 +9,7 @@
 
 0) **csTimer8bit_1sec_J8ms** - max 1 second. div 8. jitter - 8 ms. Size - 1 byte.
 
-0) **csTimer16bit_16sec** - max 16 second.
+0) **csTimer16bit_16sec** (csTimerShort) - max 16 second.
 
 0) **csTimer16bit_16sec_Flag** - max 8 second. And support user flag.
 
@@ -17,10 +17,13 @@
 
 0) **csTimer16bit_4hour_J1sec** - max 279 min (4,5 hour). div 1024. jitter - 1 second.
 
-0) **csTimer32bit_12day** - max 12,4 day.
+0) **csTimer32bit_12day** (csTimer) - max 12,4 day.
 
 0) **csTimer32bit_6day_Flag** - max 6 day. And support user flag.
 
+0) **csTimerExt32bit_12day** (csTimerExt) - big timer, max length - 12 day. Size - 4 byte. External time source.
+
+0) **csTimerExt16bit_16sec** (csTimerShortExt) - short time, max length - 16 second. Size - 2 byte. External time source.
 
 
 # Extended functions

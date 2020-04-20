@@ -1,6 +1,7 @@
 /*
 Software small timer.
-Internal version 3.5   [ heX ] 2019
+Version 3.6
+constructor [ heX ]   2019 year
 Repository: https://github.com/heX16/small_timer
 */
 #ifndef TIMER_HEX_LIB
@@ -228,11 +229,23 @@ typedef tpTimer<uint32_t, 1073741823, (unsigned long)0x7FFFFFFF, 31, 0, 1, (unsi
 typedef tpTimer<uint32_t, 536870911, (unsigned long)0x3FFFFFFF, 30, 31, 1, (unsigned long)0xFFFFFFFF>
     csTimer32bit_6day_Flag;
 
+// max 16 second. External time source.
+typedef tpTimerExternal<uint16_t, 16383, 0x7FFF, 15, 0, 1, 0xFFFF>
+    csTimerExt16bit_16sec;
+
+// max 12,4 day. External time source.
+typedef tpTimerExternal<uint32_t, 1073741823, (unsigned long)0x7FFFFFFF, 31, 0, 1, (unsigned long)0xFFFFFFFF>
+    csTimerExt32bit_12day;
+
 // default timer:
 
 typedef csTimer32bit_12day csTimer; // big timer, max length - 12 day. Size - 4 byte.
 
 typedef csTimer16bit_16sec csTimerShort; // short time, max length - 16 second. Size - 2 byte.
+
+typedef csTimerExt32bit_12day csTimerExt; // big timer, max length - 12 day. Size - 4 byte. External time source.
+
+typedef csTimerExt16bit_16sec csTimerShortExt; // short time, max length - 16 second. Size - 2 byte. External time source.
 
 
 
