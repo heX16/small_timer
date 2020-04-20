@@ -4,8 +4,8 @@ Version 3.6
 constructor [ heX ]   2020 year
 Repository: https://github.com/heX16/small_timer
 */
-#ifndef TIMER_HEX_LIB
-#define TIMER_HEX_LIB
+#ifndef SMALL_TIMER_LIB
+#define SMALL_TIMER_LIB
 
 
 #ifndef TIMER_GET_TIME
@@ -277,18 +277,23 @@ public:
 //// //// //// //// //// //// //// //// //// //// //// //// //// //// //// ////
 
 // any timer with "default time" support
+// example: tpTimerSetDefault <csTimer, 1000> tPulse1sec;
+// Note: not support csTimerExt (any template based on tpTimerExternal)
 
 template <class T, unsigned long DefaultTime>
-class csTimerSetDefault : public T {
+class tpTimerSetDefault : public T {
 public:
-  using typename T::DataType::start;
-  using typename T::DataType::startOnce;
+  using typename T::DataType;
+  using typename T::start;
+  using typename T::startOnce;
 
-  inline void start() { T::start(DefaultTime); }
-  inline bool startOnce() { return T::startOnce(DefaultTime); }
+  inline void start() { T::start((DataType)DefaultTime); }
+  inline bool startOnce() { return T::startOnce((DataType)DefaultTime); }
 };
 
-// example: typedef csTimerSetDefault <csTimer, 1000> csTimer;
 
+#undef TIMER_GETBIT
+#undef TIMER_SETBIT1
+#undef TIMER_SETBIT0
 
-#endif // TIMER_HEX_LIB
+#endif // SMALL_TIMER_LIB
