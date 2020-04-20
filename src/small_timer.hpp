@@ -1,7 +1,7 @@
 /*
 Software small timer.
 Version 3.6
-constructor [ heX ]   2019 year
+constructor [ heX ]   2020 year
 Repository: https://github.com/heX16/small_timer
 */
 #ifndef TIMER_HEX_LIB
@@ -24,6 +24,7 @@ Repository: https://github.com/heX16/small_timer
   // for linux see: https://stackoverflow.com/questions/7729686/convert-gettickcount-vxworks-to-linux
 #endif // TIMER_GET_TIME
 
+//todo: undef in end file?
 #define TIMER_GETBIT(x,bit)  ((x & (1ULL << (bit))) != 0)
 #define TIMER_SETBIT1(x,bit) {(x) |= (1ULL << (bit));}
 #define TIMER_SETBIT0(x,bit) {(x) &= ~(1ULL << (bit));}

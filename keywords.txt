@@ -1,0 +1,40 @@
+#######################################
+# Datatypes, Classes (KEYWORD1)
+#######################################
+
+tpTimer                      KEYWORD1
+tpTimerExternal              KEYWORD1
+csTimerDef                   KEYWORD1
+csTimerShortDef              KEYWORD1
+csTimerSetDefault            KEYWORD1
+csTimer                      KEYWORD1
+csTimerShort                 KEYWORD1
+csTimerExt                   KEYWORD1
+csTimerShortExt              KEYWORD1
+csTimer8bit_64ms             KEYWORD1
+csTimer8bit_128ms_J4ms_Flag  KEYWORD1
+csTimer8bit_64sec_J256ms     KEYWORD1
+csTimer8bit_1sec_J8ms        KEYWORD1
+csTimer16bit_16sec           KEYWORD1
+csTimer16bit_16sec_Flag      KEYWORD1
+csTimer16bit_16min_J64ms     KEYWORD1
+csTimer16bit_4hour_J1sec     KEYWORD1
+csTimer32bit_12day           KEYWORD1
+csTimer32bit_6day_Flag       KEYWORD1
+csTimerExt32bit_12day        KEYWORD1
+csTimerExt16bit_16sec        KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+run        KEYWORD2
+startOnce  KEYWORD2
+stop       KEYWORD2
+enabled    KEYWORD2
+run        KEYWORD2
+getFlag    KEYWORD2
+setFlag    KEYWORD2
+
+
+
