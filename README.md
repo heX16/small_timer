@@ -2,6 +2,8 @@
 
 Each timer instance takes 2 or 4 bytes. Not uses hardware timer and not uses interrupts. Timers have different accuracy modes. The count of timers is unlimited.
 
+These timers are used for non-blocking delay for the Arduino.
+
 # This file in other language
 0) [Русская документация](README_RUS.md).
 
@@ -97,3 +99,9 @@ Attention: only for professionals! Additional testing required.
 # More examples
 
 [Examples of how to write code correctly](extended_info.md#Examples)
+
+# Notes
+
+These timers take into account ["millis overflow"](https://forum.arduino.cc/index.php?topic=68349.0) ([millis rollover](https://www.faludi.com/2007/12/18/arduino-millis-rollover-handling/) ) and process it correctly.
+
+Using **csTimerDef** does not increase the size of the timer. **csTimer** and **csTimerDef** are indeed the same size. This is due to the fact that the default time is stored in code (FLASH) and not in RAM (SRAM).
