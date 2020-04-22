@@ -105,3 +105,18 @@ Attention: only for professionals! Additional testing required.
 These timers take into account ["millis overflow"](https://forum.arduino.cc/index.php?topic=68349.0) ([millis rollover](https://www.faludi.com/2007/12/18/arduino-millis-rollover-handling/) ) and process it correctly.
 
 Using **csTimerDef** does not increase the size of the timer. **csTimer** and **csTimerDef** are indeed the same size. This is due to the fact that the default time is stored in code (FLASH) and not in RAM (SRAM).
+
+# Technical details - how the "run" function works
+
+`if (((TTimer) ((TTimer) (TIMER_GET_TIME / PrecDiv) - timer) & BitMask) <MaxValue) {...`
+
+How it works?
+
+Cleared entry: `if ((TIMER_GET_TIME - timer) <MaxValue) {...`
+
+In a normal situation, the number becomes negative (if the timer has not yet reached the activation time). But an unsigned integer is used here, so overflow occurs. Overflow gives a large number. "Overflow numbers" are considered to be all that exceed half the possible range (this is similar to "signed int" at the binary level). To determine the overcrowded number, the constant "MaxValue" is used.
+
+As soon as the number becomes less than “overflowed”, this means that the number is no longer negative, and this means that the timer has reached activation time.
+
+Why am I not using regular numbers? - because in this project binary operations and bit masks are actively used, I need to completely control the binary system.
+

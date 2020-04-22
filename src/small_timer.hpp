@@ -31,7 +31,7 @@ Repository: https://github.com/heX16/small_timer
 
 // timer template
 template <
-    typename TTimer, // type Timer
+    typename TTimer, // type Timer (must be unsigned)
     unsigned long MaxValue, // max time in Timer
     unsigned long BitMask, // mask of value
     unsigned int DisableBit, // timer disable bit number
@@ -95,6 +95,7 @@ public:
     if ( ! enabled())
       return false;
     //TTimer temp = ((TTimer)((TTimer)TIMER_GET_TIME - timer) & 0x7FFF);
+    // see: README.md # Technical details - how the "run" function works
     if ( ((TTimer)((TTimer)(TIMER_GET_TIME / PrecDiv) - timer) & BitMask) < MaxValue) {
       stop();
       return true;
@@ -129,7 +130,7 @@ public:
 //// //// //// //// //// //// //// //// //// //// //// //// //// //// //// ////
 
 template <
-    typename TTimer, // type Timer
+    typename TTimer, // type Timer (must be unsigned)
     unsigned long MaxValue, // max time in Timer
     unsigned long BitMask, // mask of value
     unsigned int DisableBit, // timer disable bit number
