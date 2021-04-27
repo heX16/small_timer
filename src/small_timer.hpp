@@ -1,12 +1,13 @@
 /*
 Software small timer.
-Version 3.6
-constructor [ heX ]   2020 year
+Version 3.7
+constructor [ heX ]   2021 year
 Repository: https://github.com/heX16/small_timer
 */
 #ifndef SMALL_TIMER_LIB
 #define SMALL_TIMER_LIB
 
+// #define SUPPORT_64BIT
 
 #ifndef TIMER_GET_TIME
   #ifdef Arduino_h
@@ -24,6 +25,12 @@ Repository: https://github.com/heX16/small_timer
   // for linux see: https://stackoverflow.com/questions/7729686/convert-gettickcount-vxworks-to-linux
 #endif // TIMER_GET_TIME
 
+#ifdef SUPPORT_64BIT
+  #define TIMER_MAX_T uint64_t
+#else
+  #define TIMER_MAX_T uint32_t
+#endif
+
 //todo: undef in end file?
 #define TIMER_GETBIT(x,bit)  ((x & (1ULL << (bit))) != 0)
 #define TIMER_SETBIT1(x,bit) {(x) |= (1ULL << (bit));}
@@ -32,12 +39,12 @@ Repository: https://github.com/heX16/small_timer
 // timer template
 template <
     typename TTimer, // type Timer (must be unsigned)
-    unsigned long MaxValue, // max time in Timer
-    unsigned long BitMask, // mask of value
+    TIMER_MAX_T MaxValue, // max time in Timer
+    TIMER_MAX_T BitMask, // mask of value
     unsigned int DisableBit, // timer disable bit number
     unsigned int UserFlagBit, // user flag bit number - In some implementations, you can use the custom flag
     unsigned int PrecDiv, // precision divider
-    unsigned long InitValue // disabled timer value
+    TIMER_MAX_T InitValue // disabled timer value
 >
 class tpTimer {
 public:
@@ -131,12 +138,12 @@ public:
 
 template <
     typename TTimer, // type Timer (must be unsigned)
-    unsigned long MaxValue, // max time in Timer
-    unsigned long BitMask, // mask of value
+    TIMER_MAX_T MaxValue, // max time in Timer
+    TIMER_MAX_T BitMask, // mask of value
     unsigned int DisableBit, // timer disable bit number
     unsigned int UserFlagBit, // user flag bit number - In some implementations, you can use the custom flag
     unsigned int PrecDiv, // precision divider
-    unsigned long InitValue // disabled timer value
+    TIMER_MAX_T InitValue // disabled timer value
 >
 class tpTimerExternal: public tpTimer<TTimer, MaxValue, BitMask, DisableBit, UserFlagBit, PrecDiv, InitValue> {
 public:
@@ -170,7 +177,7 @@ public:
 
 template <
     class T,
-    unsigned long DefaultTime
+    TIMER_MAX_T DefaultTime
 >
 class tpTimerDefaultValue : public T {
   inline void start() { T::start(DefaultTime); }
@@ -224,11 +231,11 @@ typedef tpTimer<uint16_t, 16383, 0x7FFF, 15, 0, 64, 0xFFFF>
     csTimer16bit_4hour_J1sec;
 
 // max 12,4 day.
-typedef tpTimer<uint32_t, 1073741823, (unsigned long)0x7FFFFFFF, 31, 0, 1, (unsigned long)0xFFFFFFFF>
+typedef tpTimer<uint32_t, 1073741823, (TIMER_MAX_T)0x7FFFFFFF, 31, 0, 1, (TIMER_MAX_T)0xFFFFFFFF>
     csTimer32bit_12day;
 
 // max 6 day. And support user flag.
-typedef tpTimer<uint32_t, 536870911, (unsigned long)0x3FFFFFFF, 30, 31, 1, (unsigned long)0xFFFFFFFF>
+typedef tpTimer<uint32_t, 536870911, (TIMER_MAX_T)0x3FFFFFFF, 30, 31, 1, (TIMER_MAX_T)0xFFFFFFFF>
     csTimer32bit_6day_Flag;
 
 // max 16 second. External time source.
@@ -236,8 +243,15 @@ typedef tpTimerExternal<uint16_t, 16383, 0x7FFF, 15, 0, 1, 0xFFFF>
     csTimerExt16bit_16sec;
 
 // max 12,4 day. External time source.
-typedef tpTimerExternal<uint32_t, 1073741823, (unsigned long)0x7FFFFFFF, 31, 0, 1, (unsigned long)0xFFFFFFFF>
+typedef tpTimerExternal<uint32_t, 1073741823, (TIMER_MAX_T)0x7FFFFFFF, 31, 0, 1, (TIMER_MAX_T)0xFFFFFFFF>
     csTimerExt32bit_12day;
+
+#ifdef SUPPORT_64BIT
+// 64 bit timer! External time source.
+// If you have microsecond/nanosecond accuracy and large ranges this timer might come in handy.
+typedef tpTimerExternal<uint64_t, 4611686018427387903, (TIMER_MAX_T)0x7FFFFFFFFFFFFFFF, 63, 0, 1, (TIMER_MAX_T)0xFFFFFFFFFFFFFFFF>
+    csTimerExt64bit;
+#endif
 
 // default timer:
 
@@ -255,7 +269,7 @@ typedef csTimerExt16bit_16sec csTimerShortExt; // short time, max length - 16 se
 
 // default timer with "default time" support
 
-template <unsigned long DefaultTime>
+template <TIMER_MAX_T DefaultTime>
 class csTimerDef : public csTimer {
 public:
   using csTimer::start; // - function overload in class
@@ -265,7 +279,7 @@ public:
   inline bool startOnce() { return csTimer::startOnce(DefaultTime); }
 };
 
-template <unsigned long DefaultTime>
+template <TIMER_MAX_T DefaultTime>
 class csTimerShortDef : public csTimerShort {
 public:
   using csTimerShort::start;
@@ -281,7 +295,7 @@ public:
 // example: tpTimerSetDefault <csTimer, 1000> tPulse1sec;
 // Note: not support csTimerExt (any template based on tpTimerExternal)
 
-template <class T, unsigned long DefaultTime>
+template <class T, TIMER_MAX_T DefaultTime>
 class tpTimerSetDefault : public T {
 public:
   using typename T::DataType;
@@ -296,5 +310,7 @@ public:
 #undef TIMER_GETBIT
 #undef TIMER_SETBIT1
 #undef TIMER_SETBIT0
+#undef TIMER_MAX_T
+#undef SUPPORT_64BIT
 
 #endif // SMALL_TIMER_LIB
